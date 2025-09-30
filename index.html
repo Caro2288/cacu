@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入/註冊</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top */
+            background-image: url("登入註冊首頁.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 380px;
+            margin-top: 15vh; /* Adjust vertical position */
+            text-align: center;
+        }
+
+        .logo {
+            width: 70%;
+            max-width: 300px; /* Adjust based on actual logo size */
+            height: auto;
+            margin-bottom: 25px; /* Space between logo and buttons */
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            width: 85%;
+        }
+
+        .btn {
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.95;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 50px;
+            text-decoration: none;
+            box-sizing: border-box;
+            transition: opacity 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: block;
+            text-align: center;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin-top: 10vh;
+                width: 95%;
+            }
+            
+            .logo {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+            
+            .button-group {
+                width: 90%;
+            }
+            
+            .btn {
+                padding: 12px 18px;
+                font-size: 1rem;
+            }
+        }
+
+        .btn:hover {
+            opacity: 1;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-login {
+            background-color: #220f02; /* Coffee color */
+        }
+
+        .btn-register {
+            background-color: #220f02; /* Coffee color */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="Frame.png" alt="Logo" class="logo">
+        <div class="button-group">
+            <a href="app.html" class="btn btn-login">登入</a>
+            <a href="#" class="btn btn-register">註冊</a>
+        </div>
+    </div>
+
+</body>
+</html>

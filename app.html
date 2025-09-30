@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>珍奶理財助手</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <!-- 導覽列 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Cacu 生活助手</div>
+            <div class="nav-menu">
+                <div class="nav-item active" data-tab="accounting">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>記帳</span>
+                </div>
+                <div class="nav-item" data-tab="shop">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>商城</span>
+                </div>
+                <div class="nav-item" data-tab="notes">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>記事</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 記帳功能 -->
+    <div class="tab-content active" id="accounting">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-wallet"></i> 記帳管理</h2>
+            </div>
+            
+            <div class="budget-card">
+                <h3><i class="fas fa-piggy-bank"></i> 本月預算</h3>
+                <div class="budget-display">
+                    <div class="budget-item">
+                        <div class="budget-label">預算</div>
+                        <div class="budget-amount">NT$ <span id="budget">5000</span></div>
+                    </div>
+                    <div class="budget-item">
+                        <div class="budget-label">剩餘</div>
+                        <div class="budget-remaining">NT$ <span id="remaining">3200</span></div>
+                    </div>
+                </div>
+                <div class="budget-buttons">
+                    <button class="btn-primary" onclick="setBudget()">設定預算</button>
+                    <button class="btn-credit" onclick="addBudget()">💳 信用卡加值</button>
+                </div>
+            </div>
+
+            <div class="expense-form">
+                <h3><i class="fas fa-plus-circle"></i> 新增支出</h3>
+                <div class="form-group">
+                    <input type="text" id="expenseItem" placeholder="項目名稱">
+                    <input type="number" id="expenseAmount" placeholder="金額">
+                    <select id="expenseCategory">
+                        <option value="food">🍔 餐飲</option>
+                        <option value="transport">🚗 交通</option>
+                        <option value="shopping">🛍️ 購物</option>
+                        <option value="entertainment">🎮 娛樂</option>
+                        <option value="other">📦 其他</option>
+                    </select>
+                    <button onclick="addExpense()">新增</button>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3><i class="fas fa-chart-doughnut"></i> 支出分布</h3>
+                <canvas id="expenseChart"></canvas>
+            </div>
+
+            <div class="expense-list">
+                <h3><i class="fas fa-list"></i> 支出記錄</h3>
+                <div id="expenseItems"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商城功能 -->
+    <div class="tab-content" id="shop">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-store"></i> 珍奶商城</h2>
+            </div>
+
+            <div class="shop-categories">
+                <div class="category active" data-category="all">全部</div>
+                <div class="category" data-category="bubble-tea">珍奶</div>
+                <div class="category" data-category="snacks">🍿 點心</div>
+                <div class="category" data-category="accessories">🥤 配件</div>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- 商品會動態載入 -->
+            </div>
+
+            <div class="cart-summary">
+                <div class="cart-info">
+                    <span>購物車: <span id="cartCount">0</span> 項</span>
+                    <span>總計: NT$ <span id="cartTotal">0</span></span>
+                </div>
+                <div class="button" data-tooltip="總計: NT$ 0" onclick="checkout()">
+                    <div class="button-wrapper">
+                        <div class="text">結帳</div>
+                        <span class="icon">
+                            <svg viewBox="0 0 16 16" class="bi bi-cart2" fill="currentColor" height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 記事功能 -->
+    <div class="tab-content" id="notes">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-book"></i> 卡片記事</h2>
+                <div class="notes-controls">
+                    <button class="btn-primary" onclick="toggleCalendar()">
+                        <i class="fas fa-calendar"></i> 日曆
+                    </button>
+                    <button class="btn-primary" onclick="addNote()">
+                        <i class="fas fa-plus"></i> 新增記事
+                    </button>
+                </div>
+            </div>
+
+            <div class="calendar-container" id="calendarContainer" style="display: none;">
+                <div class="calendar-header">
+                    <button onclick="previousMonth()">&lt;</button>
+                    <h3 id="currentMonth"></h3>
+                    <button onclick="nextMonth()">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+
+            <div class="notes-grid" id="notesGrid">
+                <!-- 記事卡片會動態載入 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增記事彈窗 -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新增記事</h3>
+                <span class="close" onclick="closeNoteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="noteTitle" placeholder="記事標題">
+                <textarea id="noteContent" placeholder="記事內容"></textarea>
+                <input type="date" id="noteDate">
+                <select id="noteColor">
+                    <option value="yellow">🟡 黃色</option>
+                    <option value="pink">🔴紅色</option>
+                    <option value="blue">🔵 藍色</option>
+                    <option value="green">🟢 綠色</option>
+                    <option value="purple">🟣 紫色</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button onclick="saveNote()">儲存</button>
+                <button onclick="closeNoteModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
